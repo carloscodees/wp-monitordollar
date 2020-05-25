@@ -1,0 +1,186 @@
+.contenedor-monitor {
+	background: #FFF;
+	margin:20px;
+}
+.contenedor-monitor  header {
+	padding: 20px;
+}
+ .main-monitor {
+ 	display: flex;
+ }
+ .main-monitor .nav-menu-monitor {
+ 	display: flex;
+ 	flex-direction: column;
+ 	border-right: 1px solid #eee;
+ 	border-top:1px solid #eee;
+ }
+  .main-monitor .nav-menu-monitor a{
+ 	padding: 10px;
+ 	padding-right: 30px;
+ 	
+ 	text-decoration: none;
+ 	color: #444;
+ 	transition: .2s all;
+ 	border-left: 1px solid #FFF;
+ }
+  .main-monitor .nav-menu-monitor a:hover{
+ 	color: #0073aa;
+ 	border-left: 1px solid #0073aa;
+ 	transition: .2s all;
+ }
+ .panel-monitor {
+ 	padding: 20px;
+	    border-top: 1px solid #eee;
+
+ 	width: 100%;
+ }
+ .opacidad-monitor{
+ 	opacity: .5;
+ }
+ .change-monitor {
+ 	display: flex;
+ }
+ .change-act {
+ padding-right: 100px;
+ margin-right: 25px;
+ border-right: 1px solid #eee;
+ }
+ .change-new-panel *{
+ 	display: flex;
+ 	padding: 5px;
+ 	padding-top: 0px;
+ 	flex-direction: column;
+ }
+ .button-monitor-center {
+ 	text-align: center;
+ }
+ .btn-monitor {
+ 	display: flex;
+ 	flex-direction: row;
+ 	justify-content: center;
+
+
+ }
+  .btn-monitor button {
+	width: 100%;
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+  }
+
+  /*REGISTY*/
+
+.search-username-monitor {
+	display: flex;
+	justify-content: flex-start;
+	padding: 10px;
+}
+.admin-monitor-submenu a {
+	text-decoration: none;
+	border-bottom: 1px solid #FFF;
+	color: #444;
+	padding:10px;
+}
+.admin-monitor-submenu a:hover {
+	border-bottom: 1px solid #0073aa;
+	color: #0073aa;
+}
+.monitor-table tr th{
+	border-bottom: 1px solid #0073aa;
+	padding:15px;
+	color: #444;
+	background: #eee;
+	/*background: #0073aa;*/
+}
+.monitor-table tr td {
+	padding: 15px;
+}
+
+.admin-panel-dark {
+	color:#777;
+	font-size: 0.9em;
+}
+.setting-panel {
+	display: flex;
+}
+.setting-panel .setting-panel-one {
+	margin-right:  30px;
+}
+.setting-panel-config {
+	display: flex;
+	align-items: center;
+}
+/*loader*/
+
+.change-new-title {
+	display: flex;
+	align-items: center;
+}
+#check-id-monitor {
+	display: none;
+	color: #5cb85c;
+}
+#faild-id-monitor {
+	color:#d9534f;
+	display: none;
+}
+.contenedor-monitor a:focus{
+	outline: none !important;
+	    box-shadow: none !important;
+	border: 0px;
+}
+#monitor-warning-id-monitor {
+	color: #f0ad4e
+}
+.loader-monitor {
+	background-size: 20px 20px;
+	float: right;
+	vertical-align: middle;
+	width: 20px;
+	height: 20px;
+
+}
+
+.id_table_scrool_monitor {
+	overflow-y: scroll;
+
+	height: 400px;
+	width:100%;
+
+}
+.id_table_scrool_monitor table {
+	width: 100%;
+}
+.id_table_scrool_monitor::-webkit-scrollbar {
+    width: 10px;     /* Tamaño del scroll en vertical */
+    height: 400px;    /* Tamaño del scroll en horizontal */
+    display: block;
+     /* Ocultar scroll */
+}
+/* Ponemos un color de fondo y redondeamos las esquinas del thumb */
+.id_table_scrool_monitor::-webkit-scrollbar-thumb {
+    background: #ccc;
+    border-radius: 4px;
+}
+
+/* Cambiamos el fondo y agregamos una sombra cuando esté en hover */
+.id_table_scrool_monitor::-webkit-scrollbar-thumb:hover {
+    background: #b3b3b3;
+    box-shadow: 0 0 2px 1px rgba(0, 0, 0, 0.2);
+}
+
+/* Cambiamos el fondo cuando esté en active */
+.id_table_scrool_monitor::-webkit-scrollbar-thumb:active {
+    background-color: #999999;
+}
+/* Ponemos un color de fondo y redondeamos las esquinas del track */
+.id_table_scrool_monitor::-webkit-scrollbar-track {
+    background: #e1e1e1;
+    border-radius: 4px;
+}
+
+/* Cambiamos el fondo cuando esté en active o hover */
+.id_table_scrool_monitor::-webkit-scrollbar-track:hover,
+.id_table_scrool_monitor::-webkit-scrollbar-track:active {
+  background: #d4d4d4;
+}
