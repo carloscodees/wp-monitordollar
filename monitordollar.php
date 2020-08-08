@@ -144,7 +144,25 @@ class WpMonitorDollarInitClass extends  WpMonitorDollarConsultasModels {
             dbDelta($sql);
             update_option('tables_created', true);
             $this->insert_setting__default_monitor_dollar();
-        }
+		}
+		$ptbd_table_name = $wpdb->prefix . $this->tableName. "_usuarios";
+
+		if ($wpdb->get_var("SHOW TABLES LIKE '". $ptbd_table_name ."'"  ) != $ptbd_table_name ) {
+            $sql  = 'CREATE TABLE '.$ptbd_table_name.' (
+            id int(9) NOT NULL AUTO_INCREMENT,
+            usuario varchar(255) NOT NULL,
+            email varchar(255) NOT NULL,
+            fecha varchar(255) NOT NULL,
+            apiToken text NOT NULL,
+            PRIMARY KEY(id))';
+            if(!function_exists('dbDelta')) {
+                require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
+            }
+            dbDelta($sql);
+            update_option('tables_created', true);
+            $this->insert_setting__default_monitor_dollar();
+		}
+		
         $img_monitor_dollar = dirname(__FILE__)."/../../uploads/monitordollar_img";
 
 				if(!file_exists($img_monitor_dollar)) {

@@ -181,9 +181,9 @@
             },
             error: function(data){
 
-                   $(".spinner").css("display","block");
+            	$(".spinner").css("display","block");
                 $("#check-id-monitor").css('display','none');  
-                 $("#faild-id-monitor").css('display','block');
+                $("#faild-id-monitor").css('display','block');
                     
             },
             success: function(data){
@@ -205,7 +205,27 @@
 
 
 
-    });
+	});
+	
+	$("#btn_crear_username").click(function(){
+		$("#check-id-monitor").css('display', 'none');
+        $("#faild-id-monitor").css('display','none');
+		$(".spinner").css('display','flex');
+
+		if($('#usuario_id').val() == $('#password_id').val() && $('#usuario_id').val() != '' && $('#password_id').val() != ''){
+			$("#check-id-monitor").css('display', 'flex');
+        $("#faild-id-monitor").css('display','none');
+		$(".spinner").css('display','none');
+		}else {
+			$("#check-id-monitor").css('display', 'none');
+        $("#faild-id-monitor").css('display','flex');
+		$(".spinner").css('display','none');
+		}
+
+		// if($('#usuario_id').val())
+		// alert($('#usuario_id').val());
+	})
+
 
 
 

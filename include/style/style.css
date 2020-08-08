@@ -184,3 +184,29 @@
 .id_table_scrool_monitor::-webkit-scrollbar-track:active {
   background: #d4d4d4;
 }
+
+
+
+/* ESTILOS DE USUARIO */
+
+#map_create_usario {
+	display: flex ;
+	flex-direction: column;
+	justify-content: center;
+	align-items: flex-start;
+
+	
+}
+#map_create_usario div {
+	margin: 2px;
+	display: flex;
+	flex-direction: column;
+}
+.btn_style_new {
+	display: flex;
+	flex-direction: row !important;
+	align-items: center;
+}
+#btn_crear_username {
+	margin-right: 5px;
+}

@@ -206,4 +206,35 @@ Class WpMonitorDollarConsultasModels {
 		);
 	
 	}
+	public function returnDataUser_prueba(){
+		global $wpdb;
+
+		 $nameTable = $wpdb->prefix . $this->tableName ."_usuarios";
+		 $results = $wpdb->get_results( "SELECT * FROM  $nameTable ORDER BY id DESC", OBJECT );
+		 return json_encode($results);
+	}
+	public function crateUserApiToken($email, $password, $username){
+		global $wpdb;
+		$nameTable = $wpdb->prefix . $this->tableName ."_usuarios";
+		$newpasswordmd5 = md5($password);
+
+		$apiToken = 'djsasdksajdaskldjkasdjkajkljlkjk';
+		$results = $wpdb->insert($nameTable_monitor,
+		
+		array(
+		'usuario' => $username,
+
+		'email' => $email,
+
+		'password' => $newpasswordmd5,
+
+		'apiToken' => $apiToken
+
+		)
+		
+
+	);
+
+
+	}
 }
