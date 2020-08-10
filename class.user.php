@@ -6,7 +6,7 @@
 <div class="remover">
 <div>
 <label for="">Correo Electrónico</label>
-<input type="text" id="usuario_id">
+<input type="email" id="usuario_id">
 </div>
 
 <div>
@@ -38,6 +38,8 @@
     <?php 
 
     include_once($this->plugin_url .'/admin/usertable.php');
-    $list = $consultas->crateUserApiToken('carl@gmail.com', 'carcode',  'caode');
+    // $list = $const->crateUserApiToken('carl@gmail.com', 'carcode');
+    // echo "<script>alert(".$list.")</script>";
+
     ?>
 </div>

@@ -33,6 +33,12 @@ class WpMonitorDollarInitClass extends  WpMonitorDollarConsultasModels {
 		add_action('wp_ajax_monitor_ajax_submit_setting', array($this, 'monitor_submit_models_ajax_setting_ex'));
 		add_action('wp_ajax_nopriv_monitor_ajax_submit_buscar', array($this, 'monitor_submit_models_ajax_buscar'));
 		add_action('wp_ajax_monitor_ajax_submit_buscar', array($this, 'monitor_submit_models_ajax_buscar'));
+		add_action('wp_ajax_crear_ajax_user_api', array($this, 'monitor_crear_user_api'));
+		add_action('wp_ajax_nopriv_crear_ajax_user_api', array($this, 'monitor_crear_user_api'));
+
+
+		add_action('wp_ajax__nopriv_monitor_ajax_table_user', array($this, 'show_table'));
+		add_action('wp_ajax_monitor_ajax_table_user', array($this, 'show_table'));
 	}
 	public function monitor_menu(){
 		$page_title = __( 'Monitor Dollar', 'monitor-dollar' );
@@ -152,7 +158,7 @@ class WpMonitorDollarInitClass extends  WpMonitorDollarConsultasModels {
             id int(9) NOT NULL AUTO_INCREMENT,
             usuario varchar(255) NOT NULL,
             email varchar(255) NOT NULL,
-            fecha varchar(255) NOT NULL,
+            password varchar(255) NOT NULL,
             apiToken text NOT NULL,
             PRIMARY KEY(id))';
             if(!function_exists('dbDelta')) {
@@ -177,6 +183,17 @@ class WpMonitorDollarInitClass extends  WpMonitorDollarConsultasModels {
 			}
 // file_put_contents( __DIR__ . '/myg_loggg.txt', ob_get_contents() );
 }
+
+	public function monitor_crear_user_api(){
+		$email = $_POST['email'];
+		$pass = $_POST['pass'];
+		$this->crateUserApiToken($email, $pass);
+		die();
+	}
+	public function show_table(){
+		echo $this->show_Table_models();
+		die();
+	}
 public function custom_shortcode_monitor(){
 	$this->dbReturn();
 	

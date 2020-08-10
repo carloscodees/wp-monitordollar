@@ -208,14 +208,55 @@
 	});
 	
 	$("#btn_crear_username").click(function(){
-		$("#check-id-monitor").css('display', 'none');
-        $("#faild-id-monitor").css('display','none');
-		$(".spinner").css('display','flex');
+		// $("#check-id-monitor").css('display', 'none');
+        // $("#faild-id-monitor").css('display','none');
+		// $(".spinner").css('display','flex');
 
-		if($('#usuario_id').val() == $('#password_id').val() && $('#usuario_id').val() != '' && $('#password_id').val() != ''){
-			$("#check-id-monitor").css('display', 'flex');
-        $("#faild-id-monitor").css('display','none');
-		$(".spinner").css('display','none');
+		if($('#usuario_id').val() != '' && $('#password_id').val() != ''){
+			$.ajax({
+				url:  monitor_vars.ajaxurl,
+				type: 'post',
+				data: {
+					action : 'crear_ajax_user_api',
+					email: $('#usuario_id').val(),
+					pass: $('#password_id').val()
+				},
+				  beforeSend: function(){
+					// $(".panel-monitor").css('opacity','0.4');
+					$("#mascara-prueba_usuer").css('opacity', '.5');
+					$(".spinner").css("display","block");
+					$("#check-id-monitor").css('display','none');  
+					 $("#faild-id-monitor").css('display','none');
+					 
+	
+	
+				},
+				error: function(data){
+	
+					$(".spinner").css("display","block");
+					$("#check-id-monitor").css('display','none');  
+					$("#faild-id-monitor").css('display','block');
+					$("#mascara-prueba_usuer").css('opacity', '1');
+
+						
+				},
+				success: function(data){
+	
+					$("#mascara-prueba_usuer").css('opacity', '1');
+	
+		// alert(data);
+		renderTable();
+					$(".spinner").css("display","none");
+					$("#check-id-monitor").css('display','flex');  
+					 $("#faild-id-monitor").css('display','none');
+	
+		
+	
+				}
+			});
+			
+			
+	
 		}else {
 			$("#check-id-monitor").css('display', 'none');
         $("#faild-id-monitor").css('display','flex');
@@ -225,6 +266,59 @@
 		// if($('#usuario_id').val())
 		// alert($('#usuario_id').val());
 	})
+	
+	
+		$.ajax({
+			url: monitor_vars.ajaxurl,
+			type: 'post',
+			data: {
+				action: 'monitor_ajax_table_user',
+			},
+			beforeSend: function(){
+			$(".spinner").css('display','block');
+		},
+	
+			success:function(data){
+			var newdata = JSON.parse(data);
+			$("#mascara-prueba_usuer").empty();
+		newdata.forEach(function(value, index) {
+			$("#mascara-prueba_usuer").append('<tr><td>'+value.id+'</td><td>'+value.usuario+'</td><td>'+value.email+'</td><td><a href="?page=monitor-dollar&idMonitor=5&deletemonitor='+value.id+'">Eliminar</a></td></tr>');
+		
+		});
+			$(".spinner").css('display','none');
+			
+	
+	
+			}
+		})
+	
+		function renderTable(){
+			$.ajax({
+				url: monitor_vars.ajaxurl,
+				type: 'post',
+				data: {
+					action: 'monitor_ajax_table_user',
+				},
+				beforeSend: function(){
+				$(".spinner").css('display','block');
+			},
+		
+				success:function(data){
+				var newdata = JSON.parse(data);
+				$("#mascara-prueba_usuer").empty();
+			newdata.forEach(function(value, index) {
+				$("#mascara-prueba_usuer").append('<tr><td>'+value.id+'</td><td>'+value.usuario+'</td><td>'+value.email+'</td><td><a href="?page=monitor-dollar&idMonitor=5&deletemonitor='+value.id+'">Eliminar</a></td></tr>');
+			
+			});
+				$(".spinner").css('display','none');
+				
+		
+		
+				}
+			})
+		
+		}
+	
 
 
 

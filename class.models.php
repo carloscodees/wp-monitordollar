@@ -213,13 +213,16 @@ Class WpMonitorDollarConsultasModels {
 		 $results = $wpdb->get_results( "SELECT * FROM  $nameTable ORDER BY id DESC", OBJECT );
 		 return json_encode($results);
 	}
-	public function crateUserApiToken($email, $password, $username){
+	public function crateUserApiToken($email, $password){
 		global $wpdb;
+		$cu = wp_get_current_user();
+		$username = $cu->user_login;
+	
 		$nameTable = $wpdb->prefix . $this->tableName ."_usuarios";
 		$newpasswordmd5 = md5($password);
 
-		$apiToken = 'djsasdksajdaskldjkasdjkajkljlkjk';
-		$results = $wpdb->insert($nameTable_monitor,
+		$apiToken = $newpasswordmd5 . $wpdb->prefix;
+		$results = $wpdb->insert($nameTable,
 		
 		array(
 		'usuario' => $username,
@@ -231,10 +234,20 @@ Class WpMonitorDollarConsultasModels {
 		'apiToken' => $apiToken
 
 		)
-		
-
 	);
+	}
+	public function show_Table_models(){
+		global $wpdb;
 
-
+		 $nameTable = $wpdb->prefix . $this->tableName ."_usuarios";
+		 $results = $wpdb->get_results( "SELECT * FROM  $nameTable ORDER BY id DESC", OBJECT );
+		 return json_encode($results);
+	}
+	public function deleteusermonitor($id){
+		global $wpdb;
+		$nameTable = $wpdb->prefix . $this->tableName ."_usuarios";
+		
+		$results = $wpdb->delete( $nameTable, array( 'id' => $id ) );
+		return json_encode($results);
 	}
 }
