@@ -1,4 +1,8 @@
 <?php
+
+use Firebase\JWT\ExpiredException;
+use \Firebase\JWT\JWT;
+
 Class WpMonitorDollarConsultasModels {
 	public $version = '0.0.1';
 	public $author = 'SeoContenidos';
@@ -49,11 +53,15 @@ Class WpMonitorDollarConsultasModels {
   			$this->username = $results[0]->username;
 	}
 
-	public function update($arg_peso,$arg_dollar,$arg_bcv){
+	public function update($arg_peso,$arg_dollar,$arg_bcv, $admin = ''){
 
 		global $wpdb;
-		$cu = wp_get_current_user();
-		$username = $cu->user_login;
+		if($admin == ''){
+			$cu = wp_get_current_user();
+			$username = $cu->user_login;
+		}else {
+			$username = $admin;
+		}
 
 
 		$dateinfo = date_i18n( __( 'm/d/y \a \l\a\s g:ia', 'monitor-dollar-text' ) );
@@ -84,10 +92,16 @@ Class WpMonitorDollarConsultasModels {
 	  	);
 }
 	
-	public function insert($arg_peso, $arg_dollar, $arg_bcv){
+	public function insert($arg_peso, $arg_dollar, $arg_bcv, $admin = ''){
 		global $wpdb;
-		$cu = wp_get_current_user();
-		$username = $cu->user_login;
+		if($admin == ''){
+			$cu = wp_get_current_user();
+			$username = $cu->user_login;
+		}else {
+			$username = $admin;
+		}
+		
+		
 		
 
 		$dateinfo = date_i18n( __( 'm/d/y \a \l\a\s g:ia', 'monitor-dollar-text' ) );
@@ -250,4 +264,98 @@ Class WpMonitorDollarConsultasModels {
 		$results = $wpdb->delete( $nameTable, array( 'id' => $id ) );
 		return json_encode($results);
 	}
+	public function loginapimonitor($username, $password){
+		
+		$auth = wp_authenticate($username, $password);
+
+		return $auth;
+	}
+	public function generarToke($user){
+		$key = WP_MONITOR_DOLLAR_KEY;
+		$time = time();
+		$payload = array(
+			"exp" => $time + 3600,
+			"data" => array( 
+				"email" => $user->data->email,
+				"id" => $user->data->ID,
+				"user_nicename" => $user->data->user_nicename
+				)
+		);
+		// return $user;
+		$jwt = JWT::encode($payload, $key);
+		return $jwt;
+	}
+	public function validatetoken($token){
+		JWT::$leeway = 3600;
+		$timestamp = time();
+	
+	
+	
+		try {
+			 $decoded = JWT::decode($token, WP_MONITOR_DOLLAR_KEY, array('HS256'));
+			
+			 return array(
+				'success'    => false,
+				'statusCode' => 200,
+				'code'       => 1,
+				'message'    => __( 'token valido' , 'wp_montor_dollar' ),
+				'data'       => $decoded
+				
+			);
+		} catch (Exception $e) {
+			return  array(
+				'success'    => false,
+				'statusCode' => 404,
+				'code'       => 0,
+				'message'    => __( $e->getMessage() , 'wp_montor_dollar' ),
+				'data'       => null
+				
+			);
+		}
+		
+	}
+	public function api_rest_montor_inster($arg_peso, $arg_dollar, $arg_bcv, $token){
+		
+		$validate = $this->validatetoken($token);
+		
+		if($validate['code'] == 0){
+			return $validate;
+		}
+		if($validate['code'] == 1){
+			$admin = $validate['data']->data->user_nicename;
+			
+			$insert = $this->insert($arg_peso, $arg_dollar, $arg_bcv, $admin);
+			$update = $this->update($arg_peso, $arg_dollar, $arg_bcv, $admin);
+			return array(
+				'success'    => true,
+				'statusCode' => 200,
+				'code'       => 1,
+				'message'    => __( 'Cambiado con exito!' , 'wp_montor_dollar' ),
+				'data'       => null
+				
+			);
+		}
+	}
+	public function api_rest_monitor_returnTable($token){
+		$validate = $this->validatetoken($token);
+		
+		if($validate['code'] == 0){
+			return $validate;
+		}
+		if($validate['code'] == 1){
+			return $this->returnRegistryShortcode();
+		}
+	}
+	public function api_rest_monitor_setting($pesoCheck, $dollarCheck, $bcvCheck, $token){
+		$validate = $this->validatetoken($token);
+
+		if($validate['code'] == 0){
+			return $validate;
+		}
+		if($validate['code'] == 1){
+			return $this->updata_setting_monitor_dollar($pesoCheck, $dollarCheck, $bcvCheck);
+		}
+
+	}
+
 }

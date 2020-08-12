@@ -8,11 +8,22 @@ Author URI: https://seocontenidos.net/
 License: GPLv2 or later
 Text Domain: monitor-dollar-text
 */
+// Require composer.
+define('WP_MONITOR_DOLLAR_KEY', 'hola');
+require __DIR__ . '/vendor/autoload.php';
+require_once __DIR__ .'/vendor/firebase/php-jwt/src/BeforeValidException.php';
+require_once __DIR__ .'/vendor/firebase/php-jwt/src/ExpiredException.php';
+require_once __DIR__ .'/vendor/firebase/php-jwt/src/SignatureInvalidException.php';
+require_once __DIR__ .'/vendor/firebase/php-jwt/src/JWT.php';
+
+
+
 if(!class_exists('WpMonitorDollarInitClass')){
 	if(!class_exists('WpMonitorDollarConsultasModels')){
 		include_once( dirname(__FILE__) . '/class.models.php');
 
 class WpMonitorDollarInitClass extends  WpMonitorDollarConsultasModels {
+	private $namespace = 'monitor/v1';
 	public $monitordollar_lenguaje = ''; 
 	public $notice = array();
 	public $failed_edit = false;
@@ -39,7 +50,129 @@ class WpMonitorDollarInitClass extends  WpMonitorDollarConsultasModels {
 
 		add_action('wp_ajax__nopriv_monitor_ajax_table_user', array($this, 'show_table'));
 		add_action('wp_ajax_monitor_ajax_table_user', array($this, 'show_table'));
+		add_action( 'rest_api_init', array( $this, 'register_rest_routes' ) );
 	}
+	public function register_rest_routes() {
+		register_rest_route(
+			$this->namespace,
+			'token',
+			array(
+				'methods'  => 'POST',
+				'callback' => array( $this, 'get_token' ),
+			)
+		);
+
+		register_rest_route(
+			$this->namespace,
+			'token/validate',
+			array(
+				'methods'  => 'POST',
+				'callback' => array( $this, 'validate_token' ),
+			)
+		);
+		register_rest_route(
+			$this->namespace,
+			'api/update',
+			array(
+				'methods'  => 'POST',
+				'callback' => array( $this, 'dollarUpdata' ),
+			)
+		);
+		register_rest_route(
+			$this->namespace,
+			'api/returnTable',
+			array(
+				'methods'  => 'POST',
+				'callback' => array( $this, 'returntableApi' ),
+			)
+		);
+		register_rest_route(
+			$this->namespace,
+			'api/setting',
+			array(
+				'methods'  => 'POST',
+				'callback' => array( $this, 'settingApi' ),
+			)
+		);
+	}
+	public function settingApi( $request ){
+		$token = $request->get_param( 'token' );
+		$pesoCheck = $request->get_param( 'pesoCheck' );
+		$dollarCheck = $request->get_param( 'dollarCheck' );
+		$bcvCheck = $request->get_param( 'bcvCheck' );
+
+		return $this->api_rest_monitor_setting($pesoCheck, $dollarCheck, $bcvCheck, $token);
+	}
+	public function returntableApi( $request ){
+		$token = $request->get_param( 'token' );
+		return $this->api_rest_monitor_returnTable($token);
+	}
+	public function get_token( $request ){
+		$username    = $request->get_param( 'username' );
+		$password    = $request->get_param( 'password' );
+		if($username != null && $password != null){
+			$auth = $this->loginapimonitor($username,$password);
+			// return $auth;
+			if ( is_wp_error( $auth ) ) {
+				return array(
+					'success'    => false,
+					'statusCode' => 404,
+					'code'       => 0,
+					'message'    => __( 'Usuario invalido.', 'login' ),
+					'data'       => null
+				);
+			}else {
+				if($auth->caps['administrator'] == true){
+					$pro = $this->generarToke($auth);
+					return array(
+						'success'    => true,
+						'statusCode' => 200,
+						'code'       => 1,
+						'message'    => 'success',
+						'data'       => array(
+							'apiToken' =>$pro
+						)
+					);
+				}else {
+					return array(
+						'success'    => false,
+						'statusCode' => 404,
+						'code'       => 0,
+						'message'    => 'No eres administrador',
+						'data'       => null
+					);
+				}
+				
+			}
+		
+		
+		}else {
+			return array(
+				'success'    => false,
+				'statusCode' => 404,
+				'code'       => 0,
+				'message'    => __( 'Usuario invalido.', 'login' ),
+				'data'       => array(
+					'mensaje' => $username
+				),
+			);
+		}
+		
+	}
+	public function dollarUpdata( $request ){
+		$dollar    = $request->get_param( 'dollar' );
+		$peso    = $request->get_param( 'peso' );
+		$bcv    = $request->get_param( 'bcv' );
+	
+		$token    = $request->get_param( 'token' );
+		return $res = $this->api_rest_montor_inster( $peso, $dollar, $bcv, $token);
+
+	}
+	public function validate_token( $request ){
+		$token = $request->get_param( 'apiToken' );
+		return $this->validatetoken($token);
+	}
+
 	public function monitor_menu(){
 		$page_title = __( 'Monitor Dollar', 'monitor-dollar' );
 		$menu_title = __( 'Monitor Dollar', 'monitor-dollar' );
