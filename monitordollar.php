@@ -3,13 +3,13 @@
 Plugin Name: WP Monitor Dollar
 Description: Monitoriar el cambio de divisas: Dolar, Peso Colombiano, Banco central de venezula
 Author: SeoContenidos
-Version: 0.0.1
+Version: 0.0.2
 Author URI: https://seocontenidos.net/
 License: GPLv2 or later
 Text Domain: monitor-dollar-text
 */
 // Require composer.
-define('WP_MONITOR_DOLLAR_KEY', 'hola');
+define('WP_MONITOR_DOLLAR_KEY', 'here_key_private');
 require __DIR__ . '/vendor/autoload.php';
 require_once __DIR__ .'/vendor/firebase/php-jwt/src/BeforeValidException.php';
 require_once __DIR__ .'/vendor/firebase/php-jwt/src/ExpiredException.php';
@@ -284,23 +284,21 @@ class WpMonitorDollarInitClass extends  WpMonitorDollarConsultasModels {
             update_option('tables_created', true);
             $this->insert_setting__default_monitor_dollar();
 		}
-		$ptbd_table_name = $wpdb->prefix . $this->tableName. "_usuarios";
+		// $ptbd_table_name = $wpdb->prefix . $this->tableName. "_usuarios";
 
-		if ($wpdb->get_var("SHOW TABLES LIKE '". $ptbd_table_name ."'"  ) != $ptbd_table_name ) {
-            $sql  = 'CREATE TABLE '.$ptbd_table_name.' (
-            id int(9) NOT NULL AUTO_INCREMENT,
-            usuario varchar(255) NOT NULL,
-            email varchar(255) NOT NULL,
-            password varchar(255) NOT NULL,
-            apiToken text NOT NULL,
-            PRIMARY KEY(id))';
-            if(!function_exists('dbDelta')) {
-                require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
-            }
-            dbDelta($sql);
-            update_option('tables_created', true);
-            $this->insert_setting__default_monitor_dollar();
-		}
+		// if ($wpdb->get_var("SHOW TABLES LIKE '". $ptbd_table_name ."'"  ) != $ptbd_table_name ) {
+        //     $sql  = 'CREATE TABLE '.$ptbd_table_name.' (
+		// 	id int(9) NOT NULL AUTO_INCREMENT,
+		// 	idkey int(9),
+		// 	active varchar(255) NOT NULL,
+        //     PRIMARY KEY(id))';
+        //     if(!function_exists('dbDelta')) {
+        //         require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
+        //     }
+        //     dbDelta($sql);
+        //     update_option('tables_created', true);
+        //     $this->insert_setting__default_monitor_dollar();
+		// }
 		
         $img_monitor_dollar = dirname(__FILE__)."/../../uploads/monitordollar_img";
 

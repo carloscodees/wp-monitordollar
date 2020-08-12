@@ -47,7 +47,7 @@ $consultas->dbReturn();
 			<a href="?page=<?php echo esc_attr($this->slug); ?>&<?php echo esc_attr($this->idPanel); ?>=2&<?php echo esc_attr($this->idsubPanel); ?>" style="<?php if (!empty($styleTwo)){echo esc_attr($styleTwo);}?>"><?php echo esc_html_e('Registro', 'monitor-dollar-text') ?></a>
 			<a href="?page=<?php echo esc_attr($this->slug); ?>&<?php echo esc_attr($this->idPanel); ?>=3" style="<?php if (!empty($styleThree)){echo esc_attr($styleThree);}?>"><?php echo esc_html_e('Ajustes', 'monitor-dollar-text') ?></a>
 			<a href="?page=<?php echo esc_attr($this->slug); ?>&<?php echo esc_attr($this->idPanel); ?>=4" style="<?php if (!empty($styleFour)){echo esc_attr($styleFour);}?>">Shortcode</a>
-			<a href="?page=<?php echo esc_attr($this->slug); ?>&<?php echo esc_attr($this->idPanel); ?>=5" style="<?php if (!empty($styleFive)){echo esc_attr($styleFive);}?>">Usuario</a>
+
 
 			
 	</div>
